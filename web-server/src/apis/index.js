@@ -5,6 +5,14 @@ import { mockDataPerfume } from './mockData'
 
 const API_ROOT = env.API_ROOT
 
+//SECTION - User
+export const createNewUserAPI = async (newUserData) => {
+  const respone = await axios.post(`${API_ROOT}/v1/user/signup`, newUserData)
+
+  return respone.data
+}
+//!SECTION - User
+
 //SECTION - Products
 export const fetchProductsDetailsAPI = async () => {
   return mockDataPerfume
@@ -19,7 +27,10 @@ export const fetchBoardDetailsAPI = async (boardId) => {
 }
 
 export const updateBoardDetailsAPI = async (boardId, updateData) => {
-  const respone = await axios.put(`${API_ROOT}/v1/boards/${boardId}`, updateData)
+  const respone = await axios.put(
+    `${API_ROOT}/v1/boards/${boardId}`,
+    updateData
+  )
 
   return respone.data
 }

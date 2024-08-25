@@ -26,6 +26,7 @@ const theme = extendTheme({
       styleOverrides: {
         html: {},
         body: {
+          '*': { boxSizing: 'border-box' },
           '*::-webkit-scrollbar': {
             width: '10px'
             // height: '8px'

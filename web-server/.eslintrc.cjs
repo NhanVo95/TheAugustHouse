@@ -31,7 +31,7 @@ module.exports = {
     'object-curly-spacing': [1, 'always'],
     'indent': ['warn', 2, { 'SwitchCase': 1 }],
     'semi': [1, 'never'],
-    'quotes': ['error', 'single'],
+    'quotes': ['error', 'single', { 'avoidEscape': true }],
     'array-bracket-spacing': 1,
     'linebreak-style': 0,
     'no-unexpected-multiline': 'warn',

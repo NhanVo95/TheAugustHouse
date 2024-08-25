@@ -1,5 +1,17 @@
 # The August
 
+## Word with docker compose
+To run a specific Docker Compose YAML file
+```
+docker-compose -f docker-compose-develop.yml up --build
+docker compose -f docker-compose-develop.yml down -v 
+```
+
+```
+docker-compose -f docker-compose-production.yml up --build
+docker compose -f docker-compose-production.yml down -v 
+```
+
 ## Install PSReadLine for Windows Terminal Intellisense
 ```
 Install-Module PSReadLine
@@ -27,6 +39,7 @@ git config --local --add --bool push.autoSetupRemote true
 ```
 git init
 git add .
+git reset <folder name>
 git commit -m "first commit"
 git branch -M main
 git remote add origin https://github.com
@@ -42,6 +55,7 @@ git checkout develop
 git checkout -b feature/1-something
 git push --set-upstream origin feature/1-something
 git add .
+git reset <folder name>
 git commit -m "#1 - something"
 git push
 
@@ -52,7 +66,4 @@ git branch -d feature/1-something
 
 ## API list:
 V1:
-/boards/:id - Get: Get board detail
-/boards - POST: Add new board
-/columns - POST: Add new column
-/cards - POST: Add new card
+
