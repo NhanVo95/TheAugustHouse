@@ -15,12 +15,8 @@ export default function App() {
 
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route index element={<Dashboard />} />
+          {/* <Route path=":boardId" element={<BoardId />} /> */}
         </Route>
-
-        {/* <Route path="/board" element={<BoardsLayout />}>
-          <Route index element={<Boards />} />
-          <Route path=":boardId" element={<BoardId />} />
-        </Route> */}
       </Routes>
     </>
   )

@@ -5,7 +5,7 @@
 // (?=.*\d)         : Digits
 // (?=.*[!#$%&? "]) : Special characters
 // .*$              : End
-export const PASSWORD_RULE = /^.*(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*$/
+export const PASSWORD_RULE = /^.*(?=.{8,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*$/
 export const PASSWORD_RULE_MESSAGE = 'Please create a stronger password.'
 
 // Rule for Vietnamese phone number

@@ -1,10 +1,11 @@
-/* eslint-disable no-unused-vars */
 import { useState } from 'react'
+import { useSelector } from 'react-redux'
 
 import { useTheme, useMediaQuery } from '@mui/material'
 import { colorTokens } from '~/customLibraries/color'
 
 import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
 import Drawer from '@mui/material/Drawer'
 import List from '@mui/material/List'
 import Divider from '@mui/material/Divider'
@@ -17,6 +18,7 @@ import MailIcon from '@mui/icons-material/Mail'
 
 function DashboardContent() {
   const [open, setOpen] = useState(true)
+  const user = useSelector((state) => state.auth)
 
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen)
@@ -28,6 +30,7 @@ function DashboardContent() {
 
   const DrawerList = (
     <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
+      <Typography>Hello {user.name}</Typography>
       <List>
         {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
           <ListItem key={text} disablePadding>

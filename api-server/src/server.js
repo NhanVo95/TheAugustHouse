@@ -1,10 +1,14 @@
 import express from 'express'
 import cors from 'cors'
 import { corsOptions } from './config/cors'
+import session from 'express-session'
 import os from 'os'
 import { env } from 'process'
 import { log } from './utilities/logger'
 import { errorHandlingMiddleware } from './middlewares/errorHandlingMiddleware'
+
+import passport from 'passport'
+import { initializePassport } from './config/passportConfig'
 
 import exitHook from 'async-exit-hook'
 
@@ -22,6 +26,20 @@ const START_SERVER = () => {
 
   //NOTE - Enable req.body json data
   app.use(express.json())
+
+  app.use(express.urlencoded({ extended: false }))
+  app.use(
+    session({
+      secret: env.SESSION_SECRET,
+      resave: false,
+      saveUninitialized: false
+    })
+  )
+
+  //NOTE - Initialize Passport
+  initializePassport(passport)
+  app.use(passport.initialize())
+  app.use(passport.session())
 
   //NOTE - Use APIs V1
   app.use('/v1', APIs_V1)

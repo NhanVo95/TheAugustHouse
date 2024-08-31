@@ -55,6 +55,12 @@ const ErrorMessage = (props) => {
         <Typography>Email invalid</Typography>
       </>
     )
+  } else if (props.errorsSignUp.email?.type == 'Server side') {
+    return (
+      <>
+        <Typography>{props.errorsSignUp.email?.message}</Typography>
+      </>
+    )
   } else if (
     props.errorsSignUp.password?.type == 'min' ||
     props.errorsSignUp.password?.type == 'matches'
@@ -72,6 +78,7 @@ function SignUpForm() {
 
   const signInSignUp = useSelector((state) => state.signInSignUp.selected)
   const [showPassword, setShowPassword] = useState(false)
+  const [passwordValue, setPasswordValue] = useState('')
 
   const theme = useTheme()
   const colors = colorTokens(theme.palette.mode)
@@ -86,16 +93,28 @@ function SignUpForm() {
     handleSubmit: handleSubmitSignUp,
     control: controlSignUp,
     reset: resetSignUp,
-    // setError: setErrorSignUp,
+    setError: setErrorSignUp,
     formState: { errors: errorsSignUp }
   } = useForm({
     defaultValues: defaultValues,
     resolver: yupResolver(userSignUpSchema)
   })
 
-  const handleSignUpFormSubmit = (data) => {
-    createNewUserAPI(data)
-    navigate('/login')
+  const handleSignUpFormSubmit = async (data) => {
+    const result = await createNewUserAPI(data)
+
+    if (result.created) {
+      navigate('/login')
+    } else {
+      setErrorSignUp(
+        'email',
+        {
+          type: 'Server side',
+          message: 'Email exited'
+        },
+        { shouldFocus: true }
+      )
+    }
   }
 
   useEffect(() => {
@@ -141,6 +160,7 @@ function SignUpForm() {
                     type="text"
                     {...field}
                     fullWidth
+                    autoComplete="off"
                     autoFocus
                     sx={{
                       height: '55px',
@@ -169,6 +189,7 @@ function SignUpForm() {
                     type="text"
                     {...field}
                     fullWidth
+                    autoComplete="off"
                     autoFocus
                     sx={{
                       height: '55px',
@@ -199,24 +220,35 @@ function SignUpForm() {
                     type={showPassword ? 'text' : 'password'}
                     {...field}
                     fullWidth
+                    autoComplete="off"
                     autoFocus
                     sx={{
                       height: '55px',
                       margin: '10px 0',
-                      input: { color: colors.white }
+                      input: { color: colors.white },
+                      'input::-ms-reveal': { display: 'none' },
+                      'input::-ms-clear ': { display: 'none' }
                     }}
+                    onChange={(e) => setPasswordValue(e.target.value)}
+                    value={passwordValue}
                     InputProps={{
                       endAdornment: (
                         <InputAdornment position="start">
-                          <IconButton
-                            aria-label="toggle password visibility"
-                            onClick={handleClickShowPassword}
-                            onMouseDown={handleMouseDownPassword}
-                            edge="start"
-                            sx={{ color: colors.white }}
-                          >
-                            {showPassword ? <VisibilityOff /> : <Visibility />}
-                          </IconButton>
+                          {passwordValue && (
+                            <IconButton
+                              aria-label="toggle password visibility"
+                              onClick={handleClickShowPassword}
+                              onMouseDown={handleMouseDownPassword}
+                              edge="start"
+                              sx={{ color: colors.white }}
+                            >
+                              {showPassword ? (
+                                <VisibilityOff />
+                              ) : (
+                                <Visibility />
+                              )}
+                            </IconButton>
+                          )}
                           <LockOutlinedIcon sx={{ color: colors.white }} />
                         </InputAdornment>
                       )

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { setAuth } from '~/redux/features/auth/authSlice'
 
 import { useTheme } from '@mui/material'
 import { colorTokens } from '~/customLibraries/color'
@@ -21,6 +22,8 @@ import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
+
+import { loginUserAPI } from '~/apis'
 
 const userSignInSchema = yup.object().shape({
   email: yup.string().email('Invalid Email').required('Email is required'),
@@ -49,14 +52,22 @@ const ErrorMessage = (props) => {
         <Typography>Email invalid</Typography>
       </>
     )
+  } else if (props.errorsSignIn.email?.type == 'Server side') {
+    return (
+      <>
+        <Typography>{props.errorsSignIn.email?.message}</Typography>
+      </>
+    )
   }
 }
 
 function SignInForm() {
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+
   const signInSignUp = useSelector((state) => state.signInSignUp.selected)
   const [showPassword, setShowPassword] = useState(false)
-
-  let navigate = useNavigate()
+  const [passwordValue, setPasswordValue] = useState('')
 
   const theme = useTheme()
   const colors = colorTokens(theme.palette.mode)
@@ -68,21 +79,32 @@ function SignInForm() {
   }
 
   const {
-    // register: registerSignIn,
     handleSubmit: handleSubmitSignIn,
     control: controlSignIn,
     reset: resetSignIn,
-    // setError: setErrorSignIn,
+    setError: setErrorSignIn,
     formState: { errors: errorsSignIn }
   } = useForm({
     defaultValues: defaultValues,
     resolver: yupResolver(userSignInSchema)
   })
 
-  const handleSignInFormSubmit = (data) => {
-    // eslint-disable-next-line no-console
-    console.log(data)
-    navigate('/dashboard')
+  const handleSignInFormSubmit = async (data) => {
+    const result = await loginUserAPI(data)
+
+    if (typeof result === 'string' || result instanceof String) {
+      setErrorSignIn(
+        'email',
+        {
+          type: 'Server side',
+          message: result
+        },
+        { shouldFocus: true }
+      )
+    } else {
+      dispatch(setAuth(result))
+      navigate('/dashboard')
+    }
   }
 
   useEffect(() => {
@@ -127,6 +149,7 @@ function SignInForm() {
                     label="Email"
                     {...field}
                     fullWidth
+                    autoComplete="off"
                     autoFocus
                     sx={{
                       height: '55px',
@@ -155,24 +178,35 @@ function SignInForm() {
                     type={showPassword ? 'text' : 'password'}
                     {...field}
                     fullWidth
+                    autoComplete="off"
                     autoFocus
                     sx={{
                       height: '55px',
                       margin: '10px 0',
-                      input: { color: colors.white }
+                      input: { color: colors.white },
+                      'input::-ms-reveal': { display: 'none' },
+                      'input::-ms-clear ': { display: 'none' }
                     }}
+                    onChange={(e) => setPasswordValue(e.target.value)}
+                    value={passwordValue}
                     InputProps={{
                       endAdornment: (
                         <InputAdornment position="start">
-                          <IconButton
-                            aria-label="toggle password visibility"
-                            onClick={handleClickShowPassword}
-                            onMouseDown={handleMouseDownPassword}
-                            edge="start"
-                            sx={{ color: colors.white }}
-                          >
-                            {showPassword ? <VisibilityOff /> : <Visibility />}
-                          </IconButton>
+                          {passwordValue && (
+                            <IconButton
+                              aria-label="toggle password visibility"
+                              onClick={handleClickShowPassword}
+                              onMouseDown={handleMouseDownPassword}
+                              edge="start"
+                              sx={{ color: colors.white }}
+                            >
+                              {showPassword ? (
+                                <VisibilityOff />
+                              ) : (
+                                <Visibility />
+                              )}
+                            </IconButton>
+                          )}
                           <LockOutlinedIcon sx={{ color: colors.white }} />
                         </InputAdornment>
                       )

@@ -17,19 +17,20 @@ const mongoClientInstance = new MongoClient(MONGODB_URI, {
 })
 
 export const CONNECT_DB = async () => {
-  log('info', 'Connecting to MongoDB Cloud Atlas...')
+  log('info', 'Connecting to MongoDB...')
   await mongoClientInstance.connect()
-  log('info', 'Connected to MongoDB Cloud Atlas!')
+  log('info', 'Connected to MongoDB!')
 
   theAugustHouseDatabaseInstance = mongoClientInstance.db(DATABASE_NAME)
 }
 
 export const DISSCONNECT_DB = async () => {
   await mongoClientInstance.close()
-  log('info', 'Disconnected to MongoDB Cloud Atlas!')
+  log('info', 'Disconnected to MongoDB!')
 }
 
 export const GET_DB = () => {
-  if (!theAugustHouseDatabaseInstance) throw new Error('Must connect to Database first')
+  if (!theAugustHouseDatabaseInstance)
+    throw new Error('Must connect to Database first')
   return theAugustHouseDatabaseInstance
 }

@@ -1,53 +1,45 @@
 import env from '~/utilities/env'
 import axios from 'axios'
 
-import { mockDataPerfume } from './mockData'
-
 const API_ROOT = env.API_ROOT
 
 //SECTION - User
 export const createNewUserAPI = async (newUserData) => {
-  const respone = await axios.post(`${API_ROOT}/v1/user/signup`, newUserData)
+  const options = {
+    headers: { 'Content-Type': 'application/json' },
+    withCredentials: true
+  }
 
-  return respone.data
+  return await axios
+    .post(`${API_ROOT}/v1/user/signup`, newUserData, options)
+    .then((response) => response.data)
+    .catch((error) => {
+      if (error.response) {
+        return error.response.data
+      }
+    })
 }
+
+export const loginUserAPI = async (UserData) => {
+  const options = {
+    headers: { 'Content-Type': 'application/json' },
+    withCredentials: true
+  }
+
+  return await axios
+    .post(`${API_ROOT}/v1/user/signin`, UserData, options)
+    .then((response) => response.data)
+    .catch((error) => {
+      if (!error?.response) {
+        return 'No Server Response'
+      } else if (error.response?.status === 400) {
+        return 'Missing Username or Password'
+      } else if (error.response?.status === 401) {
+        return 'Unauthorized'
+      } else {
+        return 'Login Failed'
+      }
+    })
+}
+
 //!SECTION - User
-
-//SECTION - Products
-export const fetchProductsDetailsAPI = async () => {
-  return mockDataPerfume
-}
-//!SECTION - Products
-
-//SECTION - Boards
-export const fetchBoardDetailsAPI = async (boardId) => {
-  const respone = await axios.get(`${API_ROOT}/v1/boards/${boardId}`)
-
-  return respone.data
-}
-
-export const updateBoardDetailsAPI = async (boardId, updateData) => {
-  const respone = await axios.put(
-    `${API_ROOT}/v1/boards/${boardId}`,
-    updateData
-  )
-
-  return respone.data
-}
-//!SECTION - Boards
-
-//SECTION - Columns
-export const createNewColumnAPI = async (newColumnData) => {
-  const respone = await axios.post(`${API_ROOT}/v1/columns`, newColumnData)
-
-  return respone.data
-}
-//!SECTION - Columns
-
-//SECTION - Cards
-export const createNewCardAPI = async (newCardData) => {
-  const respone = await axios.post(`${API_ROOT}/v1/cards`, newCardData)
-
-  return respone.data
-}
-//!SECTION - Cards
