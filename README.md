@@ -12,9 +12,20 @@ docker-compose -f docker-compose-production.yml up --build
 docker compose -f docker-compose-production.yml down -v 
 ```
 
+```
+docker-compose -f docker-compose-production.yml run --service-ports [service]
+```
+### Setup SSL
+```
+docker-compose -f docker-compose-production.yml run --rm certbot certonly --webroot --webroot-path=/var/www/certbot/ --email thanhnhan140395@gmail.com --agree-tos --no-eff-email --staging -d [domain.com]
+
+docker-compose -f docker-compose-production.yml run --rm certbot renew
+```
+
 ## Install PSReadLine for Windows Terminal Intellisense
 ```
 Install-Module PSReadLine
+Import-Module PSReadLine
 Get-PSReadlineKeyHandler
 ```
 

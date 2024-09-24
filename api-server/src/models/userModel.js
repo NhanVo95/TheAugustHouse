@@ -1,6 +1,6 @@
 import Joi from 'joi'
 
-import { PASSWORD_RULE } from '~/utilities/validators'
+import { PASSWORD_RULE, ROLES_RULE } from '~/utilities/validators'
 import { GET_DB } from '~/config/mongodb'
 import { convertObjectId } from '~/utilities/convertObjectId'
 import { authenticator } from '~/utilities/authenticator'
@@ -18,7 +18,10 @@ const USER_COLLECTION_SCHEMA = Joi.object({
     'string.max': 'Password is too long - should be {#limit} chars maximum.',
     'string.pattern.base': 'Please create a stronger password.'
   }),
-  role: Joi.string().valid('admin', 'staff', 'client').default('client'),
+  role: Joi.array()
+    .items(Joi.number().valid(ROLES_RULE.User, ROLES_RULE.Editor, ROLES_RULE.Admin))
+    .default([ROLES_RULE.User]),
+  // role: Joi.string().valid('admin', 'staff', 'client').default('client'),
 
   createdAt: Joi.date().timestamp('javascript').default(Date.now),
   updatedAt: Joi.date().timestamp('javascript').default(null),
@@ -52,9 +55,7 @@ const createNew = async (data) => {
         password: await authenticator.saltHashPassword(validData.password)
       }
 
-      const createdUser = await GET_DB()
-        .collection(USER_COLLECTION_NAME)
-        .insertOne(newUserData)
+      const createdUser = await GET_DB().collection(USER_COLLECTION_NAME).insertOne(newUserData)
 
       return { ...createdUser, created: true }
     } else {
@@ -79,10 +80,25 @@ const findOneById = async (id) => {
   }
 }
 
+const updateUser = async (id, data) => {
+  try {
+    const options = { upsert: false }
+
+    const result = await GET_DB()
+      .collection(USER_COLLECTION_NAME)
+      .updateOne({ _id: id }, { $set: data }, options)
+
+    return result
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
 export const userModel = {
   USER_COLLECTION_NAME,
   USER_COLLECTION_SCHEMA,
   createNew,
   findOneByEmail,
-  findOneById
+  findOneById,
+  updateUser
 }

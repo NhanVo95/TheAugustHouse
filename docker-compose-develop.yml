@@ -57,7 +57,7 @@ services:
     hostname: api-server
     build:
       context: ./api-server
-      dockerfile: Dockerfile.production
+      dockerfile: Dockerfile.develop
     restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
@@ -112,15 +112,9 @@ services:
       - external_network
       - internal_network
     command: npm run dev
-    # command: sh -c "npm run sass:build && npm run nodemon"
     links:
       - api-server
     #   - redis
-    depends_on:
-      database:
-        condition: service_healthy
-    #   redis:
-    #     condition: service_healthy
 
 networks:
   external_network:

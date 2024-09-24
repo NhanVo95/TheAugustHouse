@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
 
-import { useTheme, useMediaQuery } from '@mui/material'
+import { useTheme } from '@mui/material'
 import { colorTokens } from '~/customLibraries/color'
 
 import Box from '@mui/material/Box'
@@ -17,59 +17,10 @@ import InboxIcon from '@mui/icons-material/MoveToInbox'
 import MailIcon from '@mui/icons-material/Mail'
 
 function DashboardContent() {
-  const [open, setOpen] = useState(true)
-  const user = useSelector((state) => state.auth)
-
-  const toggleDrawer = (newOpen) => () => {
-    setOpen(newOpen)
-  }
-
-  const theme = useTheme()
-  const colors = colorTokens(theme.palette.mode)
-  const isMobileScreen = useMediaQuery(theme.breakpoints.down('sm'))
-
-  const DrawerList = (
-    <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
-      <Typography>Hello {user.name}</Typography>
-      <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-    </Box>
-  )
-
   return (
     <>
-      <Box sx={{ height: '100vh', backgroundColor: colors.grey[500] }}>
-        <Box
-          sx={{ width: 250 }}
-          role="presentation"
-          onClick={toggleDrawer(false)}
-        ></Box>
-        <Drawer open={open} onClose={toggleDrawer(false)}>
-          {DrawerList}
-        </Drawer>
+      <Box sx={{ width: '100%' }}>
+        <h1>Dashboard</h1>
       </Box>
     </>
   )

@@ -63,56 +63,56 @@ function ColumnLeft() {
           }}
         >
           <Box
-            component="img"
-            src="/white-outline.png"
+            component='img'
+            src='/white-outline.png'
             sx={{
               width: '400px',
               animation: `${scaleUp} 3s ease-in-out alternate infinite`
             }}
           />
           <Box
-            component="img"
-            src="/dots.png"
+            component='img'
+            src='/dots.png'
             sx={{
               ...imageDefaultStyle,
               animation: `${scaleUp} 3s ease-in-out alternate infinite`
             }}
           />
           <Box
-            component="img"
-            src="/coin.png"
+            component='img'
+            src='/coin.png'
             sx={{
               ...imageDefaultStyle,
               animation: `${scaleDown} 3s ease-in-out alternate infinite`
             }}
           />
           <Box
-            component="img"
-            src="/spring.png"
+            component='img'
+            src='/spring.png'
             sx={{
               ...imageDefaultStyle,
               animation: `${scaleDown} 3s ease-in-out alternate infinite`
             }}
           />
           <Box
-            component="img"
-            src="/rocket.png"
+            component='img'
+            src='/rocket.png'
             sx={{
               ...imageDefaultStyle,
               animation: `${upDown} 3s ease-in-out alternate infinite`
             }}
           />
           <Box
-            component="img"
-            src="/cloud.png"
+            component='img'
+            src='/cloud.png'
             sx={{
               ...imageDefaultStyle,
               animation: `${leftRight} 3s ease-in-out alternate infinite`
             }}
           />
           <Box
-            component="img"
-            src="/stars.png"
+            component='img'
+            src='/stars.png'
             sx={{
               ...imageDefaultStyle,
               animation: `${scaleDown} 3s ease-in-out alternate infinite`
@@ -121,16 +121,10 @@ function ColumnLeft() {
         </Box>
         {/* !SECTION - Image layer */}
 
-        <Typography
-          variant="h3"
-          sx={{ textAlign: 'center', color: colors.white, width: '300px' }}
-        >
+        <Typography variant='h3' sx={{ textAlign: 'center', color: colors.white, width: '300px' }}>
           {signInSignUp ? 'Welcome to' : 'Welcome back to'}
         </Typography>
-        <Typography
-          variant="h2"
-          sx={{ fontWeight: 'bold', color: colors.greenAccent[700] }}
-        >
+        <Typography variant='h2' sx={{ fontWeight: 'bold', color: colors.greenAccent[700] }}>
           The August House
         </Typography>
       </Box>

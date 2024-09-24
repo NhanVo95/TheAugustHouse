@@ -1,5 +1,7 @@
 import { userModel } from '~/models/userModel'
 
+import { authenticator } from '~/utilities/authenticator'
+
 import { omit } from 'lodash'
 
 const createNew = async (reqBody) => {
@@ -12,7 +14,8 @@ const createNew = async (reqBody) => {
     if (createUser.created) {
       const getNewUser = await userModel.findOneById(createUser.insertedId)
 
-      return { ...getNewUser, created: createUser.created }
+      const user = omit(getNewUser, ['_id', 'password', '_destroy'])
+      return { ...user, created: createUser.created }
     } else {
       return createUser
     }
@@ -21,15 +24,36 @@ const createNew = async (reqBody) => {
   }
 }
 
-const authenticate = async (reqBody) => {
+const login = async (reqBody) => {
   try {
-    return omit(reqBody.user, ['password', '_destroy'])
+    return omit(reqBody.user, ['_id', 'password', '_destroy'])
   } catch (error) {
     throw error
   }
 }
 
+const verifyToken = async (token, secret) => {
+  const data = authenticator.decodeToken(token, secret)
+
+  let user = await userModel.findOneById(data._id)
+
+  if (!user || user.refreshToken !== token) {
+    return { statusCode: 'UNAUTHORIZED', message: 'Invalid Refresh Token' }
+  }
+
+  user = omit(user, ['password', '_destroy', 'accessToken', 'refreshToken'])
+  const { accessToken, refreshToken } = authenticator.generateTokens(user)
+
+  await userModel.updateUser(user._id, {
+    accessToken: accessToken,
+    refreshToken: refreshToken
+  })
+
+  return { ...omit(user, ['_id']), accessToken: accessToken, refreshToken: refreshToken }
+}
+
 export const userService = {
   createNew,
-  authenticate
+  login,
+  verifyToken
 }

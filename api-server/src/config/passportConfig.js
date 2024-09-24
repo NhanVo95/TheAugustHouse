@@ -1,6 +1,7 @@
 import { Strategy as LocalStrategy } from 'passport-local'
 import { ExtractJwt, Strategy as jwtStrategy } from 'passport-jwt'
 import { authenticator } from '~/utilities/authenticator'
+import { omit } from 'lodash'
 
 import { env } from 'process'
 
@@ -15,24 +16,26 @@ export const initializePassport = (passport) => {
     }
 
     try {
-      const result = await authenticator.isPasswordCorrect(
-        password,
-        user.password
-      )
+      const result = await authenticator.isPasswordCorrect(password, user.password)
       if (result) {
-        const accessToken = authenticator.generateAccessToken(user)
-        const refreshToken = authenticator.generateRefreshToken(user)
+        const data = omit(user, ['password', '_destroy', 'accessToken', 'refreshToken'])
+        const { accessToken, refreshToken } = authenticator.generateTokens(data)
+
+        userModel.updateUser(user._id, {
+          accessToken: accessToken,
+          refreshToken: refreshToken
+        })
 
         return done(
           null,
-          { ...user, accessToken: accessToken, refreshToken: refreshToken },
+          { ...data, accessToken: accessToken, refreshToken: refreshToken },
           { message: 'Logged in successfully' }
         )
       } else {
-        return done(null, false, { message: 'Email or password incorrect' })
+        return done(null, false, { message: 'Email or Password incorrect' })
       }
     } catch (error) {
-      return done(error)
+      return done(error, false)
     }
   }
 
@@ -43,10 +46,10 @@ export const initializePassport = (passport) => {
       if (user) {
         return done(null, user, { message: 'Logged in successfully' })
       } else {
-        return done(null, false, { message: 'Email or password incorrect' })
+        return done(null, false, { message: 'Token expired' })
       }
     } catch (error) {
-      return done(error)
+      return done(error, false)
     }
   }
 
@@ -64,7 +67,7 @@ export const initializePassport = (passport) => {
     new jwtStrategy(
       {
         jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-        secretOrKey: env.SESSION_SECRET
+        secretOrKey: env.ACCESS_TOKEN_SECRET
       },
       jwtAuthenticateToken
     )

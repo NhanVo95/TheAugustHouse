@@ -20,7 +20,6 @@ function ColumnRight() {
 
   return (
     <>
-      {/* SECTION - Column 2 */}
       <Box
         sx={{
           position: 'relative',
@@ -38,7 +37,7 @@ function ColumnRight() {
           }}
         >
           <Button
-            variant="contained"
+            variant='contained'
             onClick={() => {
               dispatch(setSignInSignUp(false))
             }}
@@ -48,16 +47,14 @@ function ColumnRight() {
               boxShadow: '0 5px 10px rgba(0, 0, 0, 0.2)',
               cursor: 'pointer',
               transition: '.2s',
-              background: signInSignUp
-                ? 'rgba(255, 255, 255, 0.2)'
-                : colors.grey[200]
+              background: signInSignUp ? 'rgba(255, 255, 255, 0.2)' : colors.grey[200]
             }}
           >
             Sign In
           </Button>
 
           <Button
-            variant="contained"
+            variant='contained'
             onClick={() => {
               dispatch(setSignInSignUp(true))
             }}
@@ -67,16 +64,14 @@ function ColumnRight() {
               boxShadow: '0 5px 10px rgba(0, 0, 0, 0.2)',
               cursor: 'pointer',
               transition: '.2s',
-              background: !signInSignUp
-                ? 'rgba(255, 255, 255, 0.2)'
-                : colors.grey[200]
+              background: !signInSignUp ? 'rgba(255, 255, 255, 0.2)' : colors.grey[200]
             }}
           >
             Sign Up
           </Button>
         </Box>
 
-        {/* SECTION - Sign In */}
+        {/* BUG -  */}
         <Box
           sx={{
             position: 'absolute',
@@ -93,9 +88,7 @@ function ColumnRight() {
         >
           <SignInForm />
         </Box>
-        {/* !SECTION - Sign In */}
 
-        {/* SECTION - Sign Up */}
         <Box
           sx={{
             position: 'absolute',
@@ -112,9 +105,7 @@ function ColumnRight() {
         >
           <SignUpForm />
         </Box>
-        {/* !SECTION - Sign Up */}
       </Box>
-      {/* !SECTION - Column 2 */}
     </>
   )
 }

@@ -1,4 +1,5 @@
 import { log } from '~/utilities/logger'
+import { env } from 'process'
 
 import { StatusCodes } from 'http-status-codes'
 import { userService } from '~/services/userService'
@@ -16,26 +17,37 @@ const createNew = async (req, res, next) => {
         'debug',
         `Controller - The user was unsuccessful in creating because ${createUser.message}`
       )
-      res.status(StatusCodes.UNPROCESSABLE_ENTITY).json(createUser)
+      res.status(StatusCodes.CONFLICT).json(createUser)
     }
   } catch (error) {
     next(error)
   }
 }
 
-const authenticate = async (req, res, next) => {
+const login = async (req, res, next) => {
   try {
-    const user = await userService.authenticate(req)
+    const user = await userService.login(req)
 
-    res.cookie('refreshToken', user.refreshToken, {
-      httpOnly: true,
-      sameSite: 'None',
-      maxAge: 24 * 60 * 60 * 1000 //NOTE - 24 hours
-    })
-    res.send(user)
+    res.json(user)
   } catch (error) {
     next(error)
   }
 }
 
-export const userController = { createNew, authenticate }
+const verifyToken = async (req, res, next) => {
+  try {
+    const refreshToken = req.body.refreshToken
+
+    const user = await userService.verifyToken(refreshToken, env.REFRESH_TOKEN_SECRET)
+
+    if (user.statusCode) {
+      res.status(StatusCodes[user.statusCode]).send(user.message)
+    }
+
+    res.json(user)
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const userController = { createNew, login, verifyToken }

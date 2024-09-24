@@ -80,10 +80,8 @@ const theme = extendTheme({
       styleOverrides: {
         root: {
           '--TextField-brandBorderColor': 'var(--mui-palette-neutral-white)',
-          '--TextField-brandBorderHoverColor':
-            'var(--mui-palette-secondary-main)',
-          '--TextField-brandBorderFocusedColor':
-            'var(--mui-palette-secondary-main)',
+          '--TextField-brandBorderHoverColor': 'var(--mui-palette-secondary-main)',
+          '--TextField-brandBorderFocusedColor': 'var(--mui-palette-secondary-main)',
           '& label.Mui-focused': {
             color: 'var(--TextField-brandBorderFocusedColor)'
           }

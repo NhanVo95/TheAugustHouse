@@ -3,15 +3,37 @@ import axios from 'axios'
 
 const API_ROOT = env.API_ROOT
 
-//SECTION - User
-export const createNewUserAPI = async (newUserData) => {
-  const options = {
-    headers: { 'Content-Type': 'application/json' },
+const axiosPublic = axios.create({
+  baseURL: API_ROOT,
+  headers: {
+    'Content-Type': 'application/json'
+  }
+})
+
+const axiosPrivate = axios.create({
+  baseURL: API_ROOT,
+  headers: {
+    'Content-Type': 'application/json',
     withCredentials: true
   }
+})
 
-  return await axios
-    .post(`${API_ROOT}/v1/user/signup`, newUserData, options)
+axios.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('accessToken')
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`
+    }
+    return config
+  },
+  (error) => {
+    return Promise.reject(error)
+  }
+)
+
+export const createNewUserAPI = async (newUserData) => {
+  return await axiosPublic
+    .post('/v1/user/signup', newUserData)
     .then((response) => response.data)
     .catch((error) => {
       if (error.response) {
@@ -21,19 +43,35 @@ export const createNewUserAPI = async (newUserData) => {
 }
 
 export const loginUserAPI = async (UserData) => {
-  const options = {
-    headers: { 'Content-Type': 'application/json' },
-    withCredentials: true
-  }
-
-  return await axios
-    .post(`${API_ROOT}/v1/user/signin`, UserData, options)
-    .then((response) => response.data)
+  return await axiosPublic
+    .post('/v1/user/login', UserData)
+    .then((response) => {
+      return response.data
+    })
     .catch((error) => {
       if (!error?.response) {
         return 'No Server Response'
       } else if (error.response?.status === 400) {
         return 'Missing Username or Password'
+      } else if (error.response?.status === 401) {
+        return 'Email or Password incorrect'
+      } else {
+        return 'Login Failed'
+      }
+    })
+}
+
+export const refreshTokenAPI = async (token) => {
+  return await axiosPrivate
+    .post('/v1/user/token', token)
+    .then((response) => {
+      return response.data
+    })
+    .catch((error) => {
+      if (!error?.response) {
+        return 'No Server Response'
+      } else if (error.response?.status === 400) {
+        return 'Missing Token'
       } else if (error.response?.status === 401) {
         return 'Unauthorized'
       } else {
@@ -41,5 +79,3 @@ export const loginUserAPI = async (UserData) => {
       }
     })
 }
-
-//!SECTION - User

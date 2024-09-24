@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { setAuth } from '~/redux/features/auth/authSlice'
 
@@ -63,11 +63,12 @@ const ErrorMessage = (props) => {
 
 function SignInForm() {
   const navigate = useNavigate()
+  const location = useLocation()
+  const from = location.state?.from?.pathname || '/'
   const dispatch = useDispatch()
 
   const signInSignUp = useSelector((state) => state.signInSignUp.selected)
   const [showPassword, setShowPassword] = useState(false)
-  const [passwordValue, setPasswordValue] = useState('')
 
   const theme = useTheme()
   const colors = colorTokens(theme.palette.mode)
@@ -83,6 +84,7 @@ function SignInForm() {
     control: controlSignIn,
     reset: resetSignIn,
     setError: setErrorSignIn,
+    watch: watchSignIn,
     formState: { errors: errorsSignIn }
   } = useForm({
     defaultValues: defaultValues,
@@ -103,13 +105,15 @@ function SignInForm() {
       )
     } else {
       dispatch(setAuth(result))
-      navigate('/dashboard')
+      navigate(from, { replace: true })
     }
   }
 
   useEffect(() => {
     if (!signInSignUp) resetSignIn()
   }, [signInSignUp, resetSignIn])
+
+  const watchInput = watchSignIn('password', '')
 
   return (
     <>
@@ -119,12 +123,11 @@ function SignInForm() {
           color: colors.white
         }}
       >
-        <Typography variant="h2" fontWeight={'bold'}>
+        <Typography variant='h2' fontWeight={'bold'}>
           Sign In
         </Typography>
       </Box>
 
-      {/* SECTION - Sign in Form */}
       <Box>
         <Box
           component={'form'}
@@ -140,16 +143,16 @@ function SignInForm() {
           >
             <Box>
               <Controller
-                name="email"
+                name='email'
                 control={controlSignIn}
                 errors={errorsSignIn}
                 render={({ field }) => (
                   <TextField
-                    variant="outlined"
-                    label="Email"
+                    variant='outlined'
+                    label='Email'
                     {...field}
                     fullWidth
-                    autoComplete="off"
+                    autoComplete='off'
                     autoFocus
                     sx={{
                       height: '55px',
@@ -158,7 +161,7 @@ function SignInForm() {
                     }}
                     InputProps={{
                       endAdornment: (
-                        <InputAdornment position="start">
+                        <InputAdornment position='start'>
                           <EmailOutlinedIcon sx={{ color: colors.white }} />
                         </InputAdornment>
                       )
@@ -168,17 +171,17 @@ function SignInForm() {
               />
 
               <Controller
-                name="password"
+                name='password'
                 control={controlSignIn}
                 errors={errorsSignIn}
                 render={({ field }) => (
                   <TextField
-                    variant="outlined"
-                    label="Password"
+                    variant='outlined'
+                    label='Password'
                     type={showPassword ? 'text' : 'password'}
                     {...field}
                     fullWidth
-                    autoComplete="off"
+                    autoComplete='off'
                     autoFocus
                     sx={{
                       height: '55px',
@@ -187,24 +190,18 @@ function SignInForm() {
                       'input::-ms-reveal': { display: 'none' },
                       'input::-ms-clear ': { display: 'none' }
                     }}
-                    onChange={(e) => setPasswordValue(e.target.value)}
-                    value={passwordValue}
                     InputProps={{
                       endAdornment: (
-                        <InputAdornment position="start">
-                          {passwordValue && (
+                        <InputAdornment position='start'>
+                          {watchInput && (
                             <IconButton
-                              aria-label="toggle password visibility"
+                              aria-label='toggle password visibility'
                               onClick={handleClickShowPassword}
                               onMouseDown={handleMouseDownPassword}
-                              edge="start"
+                              edge='start'
                               sx={{ color: colors.white }}
                             >
-                              {showPassword ? (
-                                <VisibilityOff />
-                              ) : (
-                                <Visibility />
-                              )}
+                              {showPassword ? <VisibilityOff /> : <Visibility />}
                             </IconButton>
                           )}
                           <LockOutlinedIcon sx={{ color: colors.white }} />
@@ -226,13 +223,13 @@ function SignInForm() {
               <ErrorMessage errorsSignIn={errorsSignIn} />
             </Box>
 
-            <Link href="#" sx={{ color: 'white', marginLeft: 'auto' }}>
-              <Typography variant="h5">Forget Your Password?</Typography>
+            <Link href='#' sx={{ color: 'white', marginLeft: 'auto' }}>
+              <Typography variant='h5'>Forget Your Password?</Typography>
             </Link>
 
             <Button
-              type="submit"
-              variant="contained"
+              type='submit'
+              variant='contained'
               sx={{
                 height: '55px',
                 padding: '0 15px',
@@ -246,7 +243,6 @@ function SignInForm() {
           </Box>
         </Box>
       </Box>
-      {/* !SECTION - Sign in Form */}
     </>
   )
 }

@@ -92,33 +92,25 @@ services:
 
   web-server:
     container_name: web-server
-    build: # "context" and "dockerfile" fields have to be under "build"
-      context: ./web-server
-      dockerfile: Dockerfile.production
-    restart: unless-stopped
+    image: nginx:latest
+    restart: always
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ./web-server:/app
-      - ./web-server/node_modules/.bin:/app/node_modules/.bin
-      - /app/node_modules
+      - ./web-server/data/nginx/:/etc/nginx/conf.d/:ro
+      - ./web-server/dist/:/etc/nginx/html
+      - ./web-server/data/certbot/www:/var/www/certbot/:ro
+      - ./web-server/data/certbot/conf/:/etc/nginx/ssl/:ro
     ports:
       - 80:80
-    env_file: '.env.web'
+      - 443:443
     environment:
-      CHOKIDAR_USEPOLLING: true
       TZ: Asia/Ho_Chi_Minh
-      BUILD_MODE: ${BUILD_MODE}
-    networks:
-      - external_network
-      - internal_network
-    links:
-      - api-server
-    #   - redis
-    depends_on:
-      database:
-        condition: service_healthy
-    #   redis:
-    #     condition: service_healthy
+
+  certbot:
+    image: certbot/certbot:latest
+    volumes:
+      - ./web-server/data/certbot/www:/var/www/certbot/:rw
+      - ./web-server/data/certbot/conf/:/etc/letsencrypt/:rw
 
 networks:
   external_network:

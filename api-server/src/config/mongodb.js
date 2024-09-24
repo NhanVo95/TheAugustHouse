@@ -24,7 +24,7 @@ export const CONNECT_DB = async () => {
   theAugustHouseDatabaseInstance = mongoClientInstance.db(DATABASE_NAME)
 }
 
-export const DISSCONNECT_DB = async () => {
+export const DISCONNECT_DB = async () => {
   await mongoClientInstance.close()
   log('info', 'Disconnected to MongoDB!')
 }

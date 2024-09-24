@@ -15,20 +15,20 @@ const isPasswordCorrect = async (password, hashedPassword) => {
   return (await compare(password, hashedPassword)) ? true : false
 }
 
-const generateAccessToken = (user) => {
-  return sign(user, env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' })
+const generateTokens = (user) => {
+  const accessToken = sign(user, env.ACCESS_TOKEN_SECRET, { expiresIn: '15m' })
+  const refreshToken = sign(user, env.REFRESH_TOKEN_SECRET, { expiresIn: '7d' })
+
+  return { accessToken, refreshToken }
 }
 
-const generateRefreshToken = (user) => {
-  return sign(user, env.REFRESH_TOKEN_SECRET, { expiresIn: '1d' })
+const decodeToken = (token, secret) => {
+  return verify(token, secret)
 }
-
-const authenticateToken = async (authHeader) => {}
 
 export const authenticator = {
   saltHashPassword,
   isPasswordCorrect,
-  generateAccessToken,
-  generateRefreshToken,
-  authenticateToken
+  generateTokens,
+  decodeToken
 }

@@ -12,7 +12,7 @@ import { initializePassport } from './config/passportConfig'
 
 import exitHook from 'async-exit-hook'
 
-import { CONNECT_DB, DISSCONNECT_DB } from './config/mongodb'
+import { CONNECT_DB, DISCONNECT_DB } from './config/mongodb'
 
 import { APIs_V1 } from '~/routes/v1'
 
@@ -55,7 +55,7 @@ const START_SERVER = () => {
   })
 
   exitHook(() => {
-    DISSCONNECT_DB()
+    DISCONNECT_DB()
     log('info', 'Server is shutting down...')
     process.exit(0)
   })

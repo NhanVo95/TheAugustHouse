@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { setSignInSignUp } from '~/redux/features/signInSignUp/signInSignUp'
 
 import { useTheme } from '@mui/material'
 import { colorTokens } from '~/customLibraries/color'
@@ -74,11 +75,11 @@ const ErrorMessage = (props) => {
 }
 
 function SignUpForm() {
+  const dispatch = useDispatch()
   let navigate = useNavigate()
 
   const signInSignUp = useSelector((state) => state.signInSignUp.selected)
   const [showPassword, setShowPassword] = useState(false)
-  const [passwordValue, setPasswordValue] = useState('')
 
   const theme = useTheme()
   const colors = colorTokens(theme.palette.mode)
@@ -94,6 +95,7 @@ function SignUpForm() {
     control: controlSignUp,
     reset: resetSignUp,
     setError: setErrorSignUp,
+    watch: watchSignUp,
     formState: { errors: errorsSignUp }
   } = useForm({
     defaultValues: defaultValues,
@@ -104,6 +106,7 @@ function SignUpForm() {
     const result = await createNewUserAPI(data)
 
     if (result.created) {
+      dispatch(setSignInSignUp(false))
       navigate('/login')
     } else {
       setErrorSignUp(
@@ -121,6 +124,8 @@ function SignUpForm() {
     if (signInSignUp) resetSignUp()
   }, [signInSignUp, resetSignUp])
 
+  const watchInput = watchSignUp('password', '')
+
   return (
     <>
       <Box
@@ -129,12 +134,11 @@ function SignUpForm() {
           color: colors.white
         }}
       >
-        <Typography variant="h2" fontWeight={'bold'}>
+        <Typography variant='h2' fontWeight={'bold'}>
           Sign Up
         </Typography>
       </Box>
 
-      {/* SECTION - Sign Up Form */}
       <Box>
         <Box
           component={'form'}
@@ -150,17 +154,17 @@ function SignUpForm() {
           >
             <Box>
               <Controller
-                name="email"
+                name='email'
                 control={controlSignUp}
                 errors={errorsSignUp}
                 render={({ field }) => (
                   <TextField
-                    variant="outlined"
-                    label="Email*"
-                    type="text"
+                    variant='outlined'
+                    label='Email*'
+                    type='text'
                     {...field}
                     fullWidth
-                    autoComplete="off"
+                    autoComplete='off'
                     autoFocus
                     sx={{
                       height: '55px',
@@ -169,7 +173,7 @@ function SignUpForm() {
                     }}
                     InputProps={{
                       endAdornment: (
-                        <InputAdornment position="start">
+                        <InputAdornment position='start'>
                           <EmailOutlinedIcon sx={{ color: colors.white }} />
                         </InputAdornment>
                       )
@@ -179,17 +183,17 @@ function SignUpForm() {
               />
 
               <Controller
-                name="name"
+                name='name'
                 control={controlSignUp}
                 errors={errorsSignUp}
                 render={({ field }) => (
                   <TextField
-                    variant="outlined"
-                    label="Name*"
-                    type="text"
+                    variant='outlined'
+                    label='Name*'
+                    type='text'
                     {...field}
                     fullWidth
-                    autoComplete="off"
+                    autoComplete='off'
                     autoFocus
                     sx={{
                       height: '55px',
@@ -198,10 +202,8 @@ function SignUpForm() {
                     }}
                     InputProps={{
                       endAdornment: (
-                        <InputAdornment position="start">
-                          <PersonOutlineOutlinedIcon
-                            sx={{ color: colors.white }}
-                          />
+                        <InputAdornment position='start'>
+                          <PersonOutlineOutlinedIcon sx={{ color: colors.white }} />
                         </InputAdornment>
                       )
                     }}
@@ -210,17 +212,17 @@ function SignUpForm() {
               />
 
               <Controller
-                name="password"
+                name='password'
                 control={controlSignUp}
                 errors={errorsSignUp}
                 render={({ field }) => (
                   <TextField
-                    variant="outlined"
-                    label="Password*"
+                    variant='outlined'
+                    label='Password*'
                     type={showPassword ? 'text' : 'password'}
                     {...field}
                     fullWidth
-                    autoComplete="off"
+                    autoComplete='off'
                     autoFocus
                     sx={{
                       height: '55px',
@@ -229,24 +231,18 @@ function SignUpForm() {
                       'input::-ms-reveal': { display: 'none' },
                       'input::-ms-clear ': { display: 'none' }
                     }}
-                    onChange={(e) => setPasswordValue(e.target.value)}
-                    value={passwordValue}
                     InputProps={{
                       endAdornment: (
-                        <InputAdornment position="start">
-                          {passwordValue && (
+                        <InputAdornment position='start'>
+                          {watchInput && (
                             <IconButton
-                              aria-label="toggle password visibility"
+                              aria-label='toggle password visibility'
                               onClick={handleClickShowPassword}
                               onMouseDown={handleMouseDownPassword}
-                              edge="start"
+                              edge='start'
                               sx={{ color: colors.white }}
                             >
-                              {showPassword ? (
-                                <VisibilityOff />
-                              ) : (
-                                <Visibility />
-                              )}
+                              {showPassword ? <VisibilityOff /> : <Visibility />}
                             </IconButton>
                           )}
                           <LockOutlinedIcon sx={{ color: colors.white }} />
@@ -269,8 +265,8 @@ function SignUpForm() {
             </Box>
 
             <Button
-              type="submit"
-              variant="contained"
+              type='submit'
+              variant='contained'
               sx={{
                 height: '55px',
                 padding: '0 15px',
@@ -284,7 +280,6 @@ function SignUpForm() {
           </Box>
         </Box>
       </Box>
-      {/* !SECTION - Sign Up Form */}
     </>
   )
 }

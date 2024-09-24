@@ -15,10 +15,21 @@ Router.route('/').get((req, res) => {
 
 Router.route('/signup').post(userValidation.createNew, userController.createNew)
 
-Router.route('/signin').post(
-  userValidation.authenticate,
+Router.route('/login').post(
+  userValidation.login,
   passport.authenticate('local'),
-  userController.authenticate
+  userController.login
 )
 
+Router.route('/token').post(
+  userValidation.verifyToken,
+  userController.verifyToken
+)
+
+Router.route('/protected').get(
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    res.json(req.user)
+  }
+)
 export const userRoute = Router

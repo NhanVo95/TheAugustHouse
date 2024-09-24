@@ -7,7 +7,7 @@ const client = redis.createClient({
   url: REDIS_URL
 })
 
-client.on('error', (err) => debugRedis('Redis Client Error', err))
+client.on('error', (err) => err)
 
 module.exports.connectRedis = async function () {
   try {
@@ -25,6 +25,8 @@ module.exports.storeRedis = async function (id, data) {
   var result = await client.hSet('user-session:' + id, data)
 
   client.expire('user-session:', 24 * 60 * 60)
+
+  return result
 }
 
 module.exports.retrieveRedis = async function (id) {
