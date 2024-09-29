@@ -1,21 +1,42 @@
 {
-    "version": "0.2",
-    "ignorePaths": [],
-    "dictionaryDefinitions": [],
-    "dictionaries": [],
-    "words": [
-        "autofetch",
-        "certbot",
-        "certonly",
-        "NhanVo",
-        "oneline",
-        "PSReadLine",
-        "reduxjs",
-        "resave",
-        "webroot"
-    ],
-    "ignoreWords": [
-        "esbenp"
-    ],
-    "import": []
+  "version": "0.2",
+  "language": "en",
+  "enableFiletypes": [
+    "markdown",
+    "mdx",
+    "typescript",
+    "typescriptreact",
+    "javascript",
+    "javascriptreact"
+  ],
+  "ignorePaths": [
+    ".cspell.json",
+    ".github/workflows/**",
+    ".vscode/*.json",
+    "**/*.{json,snap}",
+    "**/**/CHANGELOG.md",
+    "**/**/CONTRIBUTORS.md",
+    "**/**/TSLINT_RULE_ALTERNATIVES.md",
+    "**/coverage/**",
+    "**/dist/**",
+    "**/fixtures/**",
+    "**/node_modules/**",
+    "packages/website/.docusaurus/**",
+    "packages/website/build/**",
+    "packages/website/src/vendor/**"
+  ],
+  "dictionaryDefinitions": [],
+  "dictionaries": [],
+  "words": [
+    "certbot",
+    "certonly",
+    "NhanVo",
+    "oneline",
+    "PSReadLine",
+    "reduxjs",
+    "resave",
+    "webroot"
+  ],
+  "ignoreWords": ["autofetch", "esbenp", "tailwindcss"],
+  "import": []
 }

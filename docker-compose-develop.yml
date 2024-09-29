@@ -90,17 +90,18 @@ services:
       start_period: 60s
       timeout: 10s
 
-  web-server:
-    container_name: web-server
+  front-end:
+    container_name: front-end
     build: # "context" and "dockerfile" fields have to be under "build"
-      context: ./web-server
+      context: ./front-end
       dockerfile: Dockerfile.develop
     restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ./web-server:/app
-      - ./web-server/node_modules/.bin:/app/node_modules/.bin
+      - ./front-end:/app
+      - ./front-end/node_modules/.bin:/app/node_modules/.bin
       - /app/node_modules
+      - /app/.next
     ports:
       - 3000:3000
     env_file: '.env.web'

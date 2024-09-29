@@ -7,6 +7,6 @@
   "htmlWhitespaceSensitivity": "ignore",
   "bracketSameLine": false,
   "trailingComma": "none",
-  "printWidth": 100,
+  "printWidth": 80,
   "proseWrap": "preserve"
 }

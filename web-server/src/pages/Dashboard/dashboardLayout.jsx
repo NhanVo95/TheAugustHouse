@@ -8,7 +8,7 @@ import { useTheme } from '@emotion/react'
 import { colorTokens } from '~/customLibraries/color'
 
 import TopBar from '~/components/DashboardContent/TopBar'
-import SideBar from '~/components/DashboardContent/SideBar'
+import TAH_SideBar from '~/components/TAH_SideBar'
 
 import Box from '@mui/material/Box'
 import InputBase from '@mui/material/InputBase'
@@ -37,7 +37,7 @@ const dashboardLayout = () => {
     <>
       <Box sx={{ height: '100%', width: '100vw', display: 'flex', gap: 1 }}>
         {/* SIDEBAR */}
-        <SideBar />
+        <TAH_SideBar />
 
         <Box sx={{ width: '100%', gap: 1 }}>
           {/* TOP BAR */}

@@ -1,8 +1,7 @@
 import env from '~/utilities/env'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useSelector, useDispatch } from 'react-redux'
-import { setSelected } from '~/redux/features/sidebar/sidebarSlice'
+import { useSelector } from 'react-redux'
 
 import { useTheme } from '@mui/material'
 import { colorTokens } from '~/customLibraries/color'
@@ -19,20 +18,11 @@ import BarChartOutlinedIcon from '@mui/icons-material/BarChartOutlined'
 
 const sidebarWidth = env.SIDEBAR_WIDTH
 
-const SideBar = () => {
+const TAH_SideBar = () => {
   const theme = useTheme()
   const colors = colorTokens(theme.palette.mode)
-  const dispatch = useDispatch()
-
-  const [toggled, setToggled] = useState(false)
-  const [broken, setBroken] = useState(false)
-  const rtl = false
 
   const isCollapsed = useSelector((state) => state.sidebar.collapsed)
-
-  const handleClick = (events) => {
-    dispatch(setSelected({ selected: events.currentTarget.innerText }))
-  }
 
   return (
     <>
@@ -48,10 +38,15 @@ const SideBar = () => {
       >
         <SidebarHeader />
         <TAH_Divider />
-        <Item items={[{ label: 'Dashboard', icon: <DashboardOutlinedIcon /> }]} />
+        <Item
+          items={[
+            { label: 'Dashboard', icon: <DashboardOutlinedIcon /> },
+            { label: 'Charts', icon: <BarChartOutlinedIcon /> }
+          ]}
+        />
       </Box>
     </>
   )
 }
 
-export default SideBar
+export default TAH_SideBar

@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+[data-theme='dark'] {
+  --background: rgb(49, 63, 124);
+  --background: linear-gradient(
+    27deg,
+    rgba(49, 63, 124, 1) 0%,
+    rgba(0, 0, 0, 1) 50%,
+    rgba(49, 85, 166, 1) 100%
+  );
+  --foreground: #ededed;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Fallback for older Safari versions */
+@supports not (text-wrap: balance) {
+  .balanced-text {
+    text-wrap: normal; /* or another fallback style */
+  }
+}
