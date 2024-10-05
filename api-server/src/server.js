@@ -57,7 +57,7 @@ const START_SERVER = () => {
   exitHook(() => {
     DISCONNECT_DB()
     log('info', 'Server is shutting down...')
-    process.exit(0)
+    process.exit(1)
   })
 }
 

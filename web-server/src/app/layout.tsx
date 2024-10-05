@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import localFont from 'next/font/local'
 import './globals.css'
+import 'tailwindcss/tailwind.css'
 
 import { Providers as ThemeProviders } from '~/app/themeProviders'
 import { Providers } from '~/redux/Provider'

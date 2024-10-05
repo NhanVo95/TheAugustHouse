@@ -10,7 +10,7 @@ const modeSlice = createSlice({
   name: 'mode',
   initialState,
   reducers: {
-    changeMode: (state, action) => {
+    setMode: (state, action) => {
       state.mode = action.payload
     },
     toggleMode: (state) => {
@@ -27,6 +27,6 @@ const modeSlice = createSlice({
   }
 })
 
-export const { changeMode, toggleMode } = modeSlice.actions
+export const { setMode, toggleMode } = modeSlice.actions
 
 export const modeReducer = modeSlice.reducer

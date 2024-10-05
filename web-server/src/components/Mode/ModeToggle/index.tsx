@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react'
 import { useTheme } from 'next-themes'
 import Image from 'next/image'
 
+import TAH_Skeleton from '~/components/TAH_Skeleton'
+
 import { FiSun, FiMoon } from 'react-icons/fi'
 
 function ModeToggle() {
@@ -28,7 +30,11 @@ function ModeToggle() {
     )
 
   if (theme === 'dark') {
-    return <FiSun onClick={() => setTheme('light')} />
+    return (
+      <TAH_Skeleton className=''>
+        <FiSun onClick={() => setTheme('light')} />
+      </TAH_Skeleton>
+    )
   }
 
   if (theme === 'light') {
