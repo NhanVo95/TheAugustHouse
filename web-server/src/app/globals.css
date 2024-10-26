@@ -2,22 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-.light {
-  --background: white;
-  --primary: #ffffff;
-  --secondary: #ffffff;
-  --brand: #ffffff;
-}
-
-.dark {
-  --background: black;
-  --foreground: white;
-}
-
 body {
   width: 100vw;
   height: 100vh;
-  background: var(--background);
 }
 
 @layer utilities {

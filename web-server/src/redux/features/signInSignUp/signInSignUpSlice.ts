@@ -1,6 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-const initialState: { selected: boolean } = {
+// Define the interface for a SignInSignUp
+interface SignInSignUp {
+  selected: boolean
+}
+
+const initialState: SignInSignUp = {
   selected: false
 }
 

@@ -5,7 +5,8 @@ import session from 'express-session'
 import os from 'os'
 import { env } from 'process'
 import { log } from './utilities/logger'
-import { errorHandlingMiddleware } from './middlewares/errorHandlingMiddleware'
+
+import { errorHandlingMiddleware, rateLimiter } from '~/middlewares'
 
 import passport from 'passport'
 import { initializePassport } from './config/passportConfig'
@@ -13,6 +14,7 @@ import { initializePassport } from './config/passportConfig'
 import exitHook from 'async-exit-hook'
 
 import { CONNECT_DB, DISCONNECT_DB } from './config/mongodb'
+import { CONNECT_Redis } from './config/redis'
 
 import { APIs_V1 } from '~/routes/v1'
 
@@ -20,6 +22,8 @@ const START_SERVER = () => {
   const app = express()
 
   app.use(cors(corsOptions))
+
+  app.use(rateLimiter)
 
   const hostname = os.hostname
   const port = env.APP_PORT
@@ -64,6 +68,7 @@ const START_SERVER = () => {
 ;(async () => {
   try {
     await CONNECT_DB()
+    await CONNECT_Redis()
 
     START_SERVER()
   } catch (error) {

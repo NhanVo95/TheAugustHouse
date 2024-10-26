@@ -6,12 +6,6 @@ import {
 } from 'react-redux'
 import rootReducer from '~/redux/rootReducer'
 
-// Define the root state type using the ReturnType utility of TypeScript
-export type RootState = ReturnType<typeof rootReducer>
-
-// Define the type for dispatching actions from the store
-export type AppDispatch = typeof store.dispatch
-
 const store = configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
@@ -28,6 +22,11 @@ const useSelector: TypedUseSelectorHook<RootState> = useAppSelector
 
 // Create a custom useDispatch hook with typed dispatch
 const useDispatch = () => useAppDispatch<AppDispatch>()
+
+// Infer the `RootState` and `AppDispatch` types from the store itself
+export type RootState = ReturnType<typeof store.getState>
+// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
+export type AppDispatch = typeof store.dispatch
 
 // Export the Redux store, dispatch, useSelector, and useDispatch for use in components
 export { store, dispatch, useSelector, useDispatch }

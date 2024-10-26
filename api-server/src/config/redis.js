@@ -1,6 +1,6 @@
-import { env } from 'process'
 const redis = require('redis')
-// var debugRedis = require('debug')('pmo:redis')
+import { env } from 'process'
+import { log } from '~/utilities/logger'
 
 const REDIS_URL = env.REDIS_URL
 const client = redis.createClient({
@@ -9,17 +9,18 @@ const client = redis.createClient({
 
 client.on('error', (err) => err)
 
-module.exports.connectRedis = async function () {
+export const CONNECT_Redis = async function () {
+  log('info', 'Connecting to Redis...')
   try {
     await client.connect()
 
-    // debugRedis('Redis connected')
+    log('info', 'Redis connected')
   } catch (error) {
-    // debugRedis(error)
+    log('error', error)
   }
 }
 
-module.exports.storeRedis = async function (id, data) {
+export const storeRedis = async function (id, data) {
   delete data.checked
 
   var result = await client.hSet('user-session:' + id, data)
@@ -29,7 +30,7 @@ module.exports.storeRedis = async function (id, data) {
   return result
 }
 
-module.exports.retrieveRedis = async function (id) {
+export const retrieveRedis = async function (id) {
   var filter = 'user-session:' + id
   let userSession = await client.hGetAll(filter)
 

@@ -26,31 +26,31 @@ services:
       retries: 5
       start_period: 40s
 
-  # redis:
-  #   container_name: redis
-  #   image: redis:7.2.4
-  #   restart: always
-  #   expose:
-  #     - 6379:6379
-  #   networks:
-  #     - internal_network
-  #   volumes:
-  #     - /etc/localtime:/etc/localtime:ro
-  #     - ./database/redis:/usr/local/etc/redis/
-  #     - ./database/redis_config:/usr/local/etc/redis_config/
-  #   command:
-  #     [
-  #       "redis-server",
-  #       "/usr/local/etc/redis_config/redis.conf",
-  #       "--appendonly",
-  #       "yes",
-  #     ]
-  #   healthcheck:
-  #     test: ["CMD", "redis-cli", "-a", "s86Pr4gH3EJi", "--raw", "incr", "ping"]
-  #     interval: 10s
-  #     timeout: 10s
-  #     retries: 5
-  #     start_period: 40s
+  redis:
+    container_name: redis
+    image: redis:7.2.4
+    restart: always
+    expose:
+      - 6379:6379
+    networks:
+      - internal_network
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./database/redis:/usr/local/etc/redis/
+      - ./database/redis_config:/usr/local/etc/redis_config/
+    command:
+      [
+        'redis-server',
+        '/usr/local/etc/redis_config/redis.conf',
+        '--appendonly',
+        'yes'
+      ]
+    healthcheck:
+      test: ['CMD', 'redis-cli', '-a', 's86Pr4gH3EJi', '--raw', 'incr', 'ping']
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
 
   api-server:
     container_name: api-server
@@ -107,6 +107,7 @@ services:
     env_file: '.env.web'
     environment:
       CHOKIDAR_USEPOLLING: true
+      WATCHPACK_POLLING: true
       TZ: Asia/Ho_Chi_Minh
       BUILD_MODE: ${BUILD_MODE}
     networks:
