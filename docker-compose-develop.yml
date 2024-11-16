@@ -46,16 +46,16 @@ services:
       retries: 5
       start_period: 40s
 
-  api-server:
-    container_name: api-server
-    hostname: api-server
+  server:
+    container_name: server
+    hostname: server
     build:
-      context: ./api-server
+      context: ./server
       dockerfile: Dockerfile.develop
     restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ./api-server:/app
+      - ./server:/app
       - /app/node_modules
     ports:
       - ${PORT_API}:${PORT_API}
@@ -84,16 +84,16 @@ services:
       start_period: 60s
       timeout: 10s
 
-  web-server:
-    container_name: web-server
+  client:
+    container_name: client
     build: # "context" and "dockerfile" fields have to be under "build"
-      context: ./web-server
+      context: ./client
       dockerfile: Dockerfile
     restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ./web-server:/app
-      - ./web-server/node_modules/.bin:/app/node_modules/.bin
+      - ./client:/app
+      - ./client/node_modules/.bin:/app/node_modules/.bin
       - /app/node_modules
       - /app/.next
     ports:
@@ -106,7 +106,7 @@ services:
       - internal_network
     command: ['npm', 'run', 'dev']
     links:
-      - api-server
+      - server
 
 networks:
   external_network:
