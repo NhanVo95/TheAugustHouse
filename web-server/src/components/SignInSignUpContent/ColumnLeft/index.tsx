@@ -6,9 +6,7 @@ import type { RootState } from '~/redux/store'
 const imageDefaultStyle = 'absolute left-0 top-0 w-[400px]'
 
 function ColumnLeft() {
-  const signInSignUp = useSelector(
-    (state: RootState) => state.signInSignUp.selected
-  )
+  const signInSignUp = useSelector((state: RootState) => state.signInSignUp.selected)
 
   return (
     <>
@@ -23,11 +21,7 @@ function ColumnLeft() {
       >
         {/* SECTION - Image layer */}
         <div className='relative'>
-          <img
-            alt='white-outline'
-            src='/white-outline.png'
-            className='w-[400px] animate-scaleUp'
-          />
+          <img alt='white-outline' src='/white-outline.png' className='w-[400px] animate-scaleUp' />
           <img
             alt='white-outline'
             src='/dots.png'
@@ -64,9 +58,7 @@ function ColumnLeft() {
         <h3 className='text-center text-white w-[300px]'>
           {signInSignUp ? 'Welcome to' : 'Welcome back to'}
         </h3>
-        <h2 className='text-center text-white text-4xl font-bold'>
-          The August House
-        </h2>
+        <h2 className='text-center text-white text-4xl font-bold'>The August House</h2>
       </div>
       {/* !SECTION - Column 1 */}
     </>

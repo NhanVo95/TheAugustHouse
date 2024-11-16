@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { useTheme } from 'next-themes'
 import Image from 'next/image'
 
-import TAH_Skeleton from '~/components/TAH_Skeleton'
+import TAH_Skeleton from '~/components/TAH_Components/TAH_Skeleton'
 
 import { FiSun, FiMoon } from 'react-icons/fi'
 

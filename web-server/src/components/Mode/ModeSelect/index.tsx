@@ -3,7 +3,7 @@
 import { useTheme } from 'next-themes'
 import './style.css'
 
-import TAH_DropdownMenu from '~/components/TAH_DropdownMenu'
+import TAH_DropdownMenu from '~/components/TAH_Components/TAH_DropdownMenu'
 
 function ModeSelect() {
   const { theme, setTheme } = useTheme()

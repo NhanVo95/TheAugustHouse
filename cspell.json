@@ -35,7 +35,8 @@
     "PSReadLine",
     "reduxjs",
     "resave",
-    "webroot"
+    "webroot",
+    "hookform"
   ],
   "ignoreWords": ["autofetch", "esbenp", "tailwindcss"],
   "import": []

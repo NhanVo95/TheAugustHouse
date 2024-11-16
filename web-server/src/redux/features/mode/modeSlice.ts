@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 let initialState: {
   mode: string
 } = {
-  mode: 'dark'
+  mode: 'light'
 }
 
 const modeSlice = createSlice({

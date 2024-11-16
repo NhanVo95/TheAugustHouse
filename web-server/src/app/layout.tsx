@@ -43,6 +43,14 @@ export default function RootLayout({
           `}
         </style>
 
+        <style global jsx>
+          {`
+            .dark {
+              ${primaryColor} ${a11yColor} ${borderPrimaryColor} ${backgroundPrimaryColor}
+            }
+          `}
+        </style>
+
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >

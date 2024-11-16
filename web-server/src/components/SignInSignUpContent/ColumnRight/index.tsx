@@ -7,7 +7,7 @@ import { setSignInSignUp } from '~/redux/features/signInSignUp/signInSignUpSlice
 import SignInForm from './SignInForm'
 import SignUpForm from './SignUpForm'
 
-import TAH_Button from '~/components/TAH_Button'
+import TAH_Button from '~/components/TAH_Components/TAH_Button'
 
 function ColumnRight() {
   const dispatch = useDispatch()

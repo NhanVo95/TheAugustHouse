@@ -19,17 +19,17 @@ import { CONNECT_Redis } from './config/redis'
 import { APIs_V1 } from '~/routes/v1'
 
 const START_SERVER = () => {
+  const hostname = os.hostname
+  const port = env.APP_PORT
+
   const app = express()
+
+  //NOTE - Enable req.body json data
+  app.use(express.json())
 
   app.use(cors(corsOptions))
 
   app.use(rateLimiter)
-
-  const hostname = os.hostname
-  const port = env.APP_PORT
-
-  //NOTE - Enable req.body json data
-  app.use(express.json())
 
   app.use(express.urlencoded({ extended: false }))
   app.use(

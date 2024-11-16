@@ -90,16 +90,15 @@ services:
       start_period: 60s
       timeout: 10s
 
-  web-server:
+  nginx-server:
     container_name: web-server
     image: nginx:latest
     restart: always
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ./web-server/data/nginx/:/etc/nginx/conf.d/:ro
-      - ./web-server/dist/:/etc/nginx/html
-      - ./web-server/data/certbot/www:/var/www/certbot/:ro
-      - ./web-server/data/certbot/conf/:/etc/nginx/ssl/:ro
+      - ./nginx/:/etc/nginx/conf.d/:ro
+      - ./nginx/certbot/www:/var/www/certbot/:ro
+      - ./nginx/certbot/conf/:/etc/nginx/ssl/:ro
     ports:
       - 80:80
       - 443:443
@@ -109,8 +108,8 @@ services:
   certbot:
     image: certbot/certbot:latest
     volumes:
-      - ./web-server/data/certbot/www:/var/www/certbot/:rw
-      - ./web-server/data/certbot/conf/:/etc/letsencrypt/:rw
+      - ./nginx/certbot/www:/var/www/certbot/:rw
+      - ./nginx/certbot/conf/:/etc/letsencrypt/:rw
 
 networks:
   external_network:

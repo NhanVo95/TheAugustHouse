@@ -36,14 +36,4 @@ const getAccessibleColor = (hex: string): string => {
   return luminance > 0.5 ? '#000000' : '#FFFFFF'
 }
 
-const withOpacity = (variableName: string) => {
-  let result = ({ opacityValue }: { opacityValue: number }): string => {
-    return opacityValue !== undefined
-      ? `rgba(var(${variableName}), ${opacityValue})`
-      : `rgb(var(${variableName}))`
-  }
-
-  return result as unknown as string
-}
-
-export { hexToRgb, getAccessibleColor, withOpacity }
+export { hexToRgb, getAccessibleColor }

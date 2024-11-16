@@ -26,11 +26,6 @@ interface TAH_ButtonProps {
 //   cursor: pointer;
 // }
 
-const buttonDefaultStyles =
-  'w-28 h-12 border-2 border-primary rounded-full bg-button-primary bg-opacity-30 selected:bg-button-primary'
-
-const textDefaultStyles = 'text-primary'
-
 const buttonSolidStyles = 'solid:bg-red-500 solid:selected:bg-red-900'
 
 const TAH_Button: React.FC<TAH_ButtonProps> = ({
@@ -39,22 +34,23 @@ const TAH_Button: React.FC<TAH_ButtonProps> = ({
   label,
   onClick
 }) => {
-  return (
-    <button
-      data-style={variant}
-      data-selected={selected}
-      className={joinStrings(' ', buttonDefaultStyles, buttonSolidStyles)}
-      onClick={onClick}
-    >
-      <span
-        data-style={variant}
+  //SECTION - This is a default button component
+  const DefaultButton = () => {
+    return (
+      <button
         data-selected={selected}
-        className={joinStrings(' ', textDefaultStyles)}
+        className='w-28 h-12 border-2 border-primary rounded-full bg-primary bg-opacity-30 selected:bg-primary'
+        onClick={onClick}
       >
-        {label}
-      </span>
-    </button>
-  )
+        <span data-selected={selected} className='text-primary'>
+          {label}
+        </span>
+      </button>
+    )
+  }
+  //!SECTION - This is a default button component
+
+  return <DefaultButton />
 }
 
 export default TAH_Button

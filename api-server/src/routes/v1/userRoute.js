@@ -2,7 +2,7 @@ import express from 'express'
 import passport from 'passport'
 import { StatusCodes } from 'http-status-codes'
 
-import { userValidation } from '~/validations/userValidation'
+import { userValidation } from '~/utilities/validation/userValidation'
 import { userController } from '~/controllers/userController'
 
 const Router = express.Router()

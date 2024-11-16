@@ -1,7 +1,15 @@
 import type { Config } from 'tailwindcss'
 import plugin from 'tailwindcss/plugin'
 
-import { withOpacity } from '~/utilities/color'
+const withOpacity = (variableName: string) => {
+  let result = ({ opacityValue }: { opacityValue: number }): string => {
+    return opacityValue !== undefined
+      ? `rgba(var(${variableName}), ${opacityValue})`
+      : `rgb(var(${variableName}))`
+  }
+
+  return result as unknown as string
+}
 
 const config: Config = {
   darkMode: 'class', // or 'media' if you prefer automatic switching based on user's system preference
@@ -38,11 +46,11 @@ const config: Config = {
 
       colors: { primary: withOpacity('--color-primary') },
 
+      textColor: { primary: withOpacity('--color-a11y') },
+
       backgroundImage: {
         signInSignUp: 'url("/desktop-backgrounds.jpg")'
-      },
-
-      textColor: { primary: withOpacity('--color-a11y') }
+      }
     }
   },
   variants: {
